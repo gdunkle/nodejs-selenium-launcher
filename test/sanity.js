@@ -46,11 +46,11 @@ describe("sanity", function(){
             delete process.env.SELENIUM_LAUNCHER_PORT;
             if (er) return done(er);
             assert.equal(selenium.port, 4444);
-            assert.equal(selenium.extraArgs[0], "-Dwebdriver.chrome.driver");
-            assert.equal(selenium.extraArgs[1],"/fakepath/chromedriver");
+            assert.equal(selenium.extraArgs[0], "-Dwebdriver.chrome.driver=/fakepath/chromedriver");
+          
             selenium.on('exit', function() { done(); });
             selenium.kill();
-          },["-Dwebdriver.chrome.driver","/fakepath/chromedriver"]);
+          },["-Dwebdriver.chrome.driver=/fakepath/chromedriver"]);
   
   });
 
