@@ -4,12 +4,13 @@ selenium-launcher [![Build Status](https://secure.travis-ci.org/daaku/nodejs-sel
 A library to download and launch the Selenium Server.
 
 ```javascript
-var seleniumLauncher = require('selenium-launcher')
+var seleniumLauncher = require('selenium-launcher');
+var extraArgs=["-Dfoo","bar"];
 seleniumLauncher(function(er, selenium) {
   // selenium is running
   // selenium.host / selenium.port are available
   // selenium is a child process, so you can do selenium.kill()
-})
+},extraArgs);
 ```
 
 Forcing selenium server version
