@@ -1,13 +1,13 @@
 var assert = require('assert')
   , soda = require('soda')
-  , seleniumLauncher = require('../lib/selenium-launcher')
+  , seleniumLauncher = require('../lib/selenium-launcher');
 
 describe("sanity", function(){
 
   it("should be sane", function(done){
     seleniumLauncher(function(er, selenium) {
-      if (er) return done(er)
-      selenium.on('exit', function() { done() })
+      if (er) return done(er);
+      selenium.on('exit', function() { done(); });
 
       soda.createClient({
         url: 'http://www.facebook.com/',
@@ -23,21 +23,35 @@ describe("sanity", function(){
       .assertTextPresent('Email')
       .testComplete()
       .end(function() {
-        selenium.kill()
-      })
-    })
+        selenium.kill();
+      });
+    });
   });
 
 
   it('should get the server port from the node environment', function(done) {
-    process.env.SELENIUM_LAUNCHER_PORT = '4444'
+    process.env.SELENIUM_LAUNCHER_PORT = '4444';
     seleniumLauncher(function(er, selenium) {
-      delete process.env.SELENIUM_LAUNCHER_PORT
+      delete process.env.SELENIUM_LAUNCHER_PORT;
       if (er) return done(er);
       assert.equal(selenium.port, 4444);
-      selenium.on('exit', function() { done() })
-      selenium.kill()
-    })
+      selenium.on('exit', function() { done(); });
+      selenium.kill();
+    });
+  });
+  
+  it('should be able to pass extra arguments to the server',function(done){
+      process.env.SELENIUM_LAUNCHER_PORT = '4444';
+          seleniumLauncher(function(er, selenium) {
+            delete process.env.SELENIUM_LAUNCHER_PORT;
+            if (er) return done(er);
+            assert.equal(selenium.port, 4444);
+            assert.equal(selenium.extraArgs[0], "-Dwebdriver.chrome.driver");
+            assert.equal(selenium.extraArgs[1],"/fakepath/chromedriver");
+            selenium.on('exit', function() { done(); });
+            selenium.kill();
+          },["-Dwebdriver.chrome.driver","/fakepath/chromedriver"]);
+  
   });
 
 });
